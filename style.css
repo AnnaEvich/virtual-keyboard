@@ -44,3 +44,55 @@ body {
     border-radius: 10px;
     transition: 150ms;
 }
+
+.key:hover {
+    background: rgba(218, 220, 227, 0.84);
+    transition: 150ms;
+}
+
+.key.active {
+    transition: 150ms;
+    box-shadow: 0 -2vmin 4vmin #a7ecdc inset, 0 1vmin 4vmin rgb(131, 121, 245) inset,
+    0 -2vmin 7vmin rgb(255, 255, 255) inset;
+}
+
+#Delete {
+    width: 80px;
+}
+
+#CapsLock {
+    width: 200px;
+}
+
+#Tab {
+    width: 80px;
+}
+
+#Enter {
+    width: 200px;
+}
+
+.key:nth-child(56) {
+    width: 60px !important;
+
+}
+
+#Shift {
+    width: 200px;
+}
+
+.key.space {
+    width: 590px;
+}
+
+#Backspace {
+    width: 200px;
+}
+
+#Control {
+    width: 65px;
+}
+
+#Alt {
+    width: 30px;;
+}

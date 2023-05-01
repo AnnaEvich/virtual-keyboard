@@ -1,3 +1,7 @@
+let lang = 'en';
+
+let keyCodeList = [];
+
 const keyCodeListRu = [
   '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace',
   'Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\', 'Delete',
@@ -25,9 +29,15 @@ const specialKeyNameList = {
   'ArrowUp': '↑',
 };
 
-// let keyCodeList = [];
-let keyCodeList = keyCodeListEn;
-
+function setLang(langCode = 'en') {
+  if (langCode === 'ru') {
+    lang = 'ru';
+    keyCodeList = keyCodeListRu;
+  } else {
+    lang = 'en';
+    keyCodeList = keyCodeListEn;
+  }
+}
 
 function createBodyContainer() {
   let createBody = document.createElement('main');
@@ -42,6 +52,8 @@ function createKeyboardInput() {
 }
 
 function createKeys() {
+  setLang(lang);
+
   let keysContainer = document.createElement('div');
   keysContainer.id = 'keys-container';
 
@@ -60,9 +72,97 @@ function createKeys() {
   return keysContainer;
 }
 
+function replaceKeys() {
+  document.getElementById('keys-container').remove();
+  document.getElementById('body-container').appendChild(createKeys());
+  initVirtualKeyPressHandler();
+}
+
+function addKeyToInput(key) {
+  let input = document.getElementById('keyboard-input');
+  if (key === 'Backspace') {
+    let inputArrayValue = input.value.split('')
+    inputArrayValue.pop();
+    input.value = inputArrayValue.join('');
+  }
+  else if (key.length === 1) {
+    input.value = input.value + key;
+  }
+}
+
+function initKeyPressHandler() {
+  document.addEventListener('keydown', function(event) {
+    if (keyCodeList.includes(event.key)) {
+      addKeyToInput(event.key);
+      let keyId = specialKeyNameList[event.key]? specialKeyNameList[event.key] : event.key;
+      let keyHtml = document.getElementById(keyId);
+      if (keyHtml) {
+        keyHtml.classList.add('active');
+      }
+    }
+  });
+  document.addEventListener('keyup', function(event) {
+    if (keyCodeList.includes(event.key)) {
+      let keyId = specialKeyNameList[event.key]? specialKeyNameList[event.key] : event.key;
+      let keyHtml = document.getElementById(keyId);
+      if (keyHtml) {
+        keyHtml.classList.remove('active');
+      }
+    }
+  });
+}
+
+function initVirtualKeyPressHandler() {
+  document.querySelectorAll('.key').forEach(function(key) {
+    key.addEventListener('click', function(){
+      addKeyToInput(key.id);
+      key.classList.add('active');
+      setTimeout(function(){
+        key.classList.remove('active');
+      }, 200);
+    })
+  })
+}
+
+function initChangeLanguageHandler() {
+  let shiftFlag = false;
+  let altFLag = false;
+
+  document.onkeydown = function(event) {
+    if (event.key === 'Alt') {
+      altFLag = true;
+    }
+    else if (event.key === 'Shift') {
+      shiftFlag = true;
+    }
+  };
+
+  document.onkeyup = function(event) {
+    if (event.key === 'Alt') {
+      if (shiftFlag) {
+        setLang(lang === 'en' ? 'ru' : 'en');
+        replaceKeys();
+      }
+      shiftFlag = altFLag = false;
+    }
+
+    else if (event.key === 'Shift') {
+      if (altFLag) {
+        setLang(lang === 'en' ? 'ru' : 'en');
+        replaceKeys();
+      }
+      shiftFlag = altFLag = false;
+    }
+  };
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   let bodyContainer = createBodyContainer();
   bodyContainer.appendChild(createKeyboardInput());
   bodyContainer.appendChild(createKeys());
   document.body.appendChild(bodyContainer);
+
+  initChangeLanguageHandler();
+  initKeyPressHandler();
+  initVirtualKeyPressHandler();
 });
