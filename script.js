@@ -1,4 +1,4 @@
-let lang = 'en';
+let lang = getCookie() ?? 'en';
 
 let keyCodeList = [];
 
@@ -29,14 +29,34 @@ const specialKeyNameList = {
   'ArrowUp': '↑',
 };
 
+function createWarning() {
+  let warningHotCase = document.createElement('div');
+  warningHotCase.id = 'alt-shift';
+  warningHotCase.innerText = 'Change language Alt + Shift';
+  return warningHotCase;
+}
+
 function setLang(langCode = 'en') {
   if (langCode === 'ru') {
     lang = 'ru';
+    setCookie(lang);
     keyCodeList = keyCodeListRu;
   } else {
     lang = 'en';
+    setCookie(lang);
     keyCodeList = keyCodeListEn;
   }
+}
+
+function getCookie(name = 'lang'){
+  let matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+function setCookie(value) {
+  let date = new Date(Date.now() + 60 * 60 * 24);
+  date = date.toUTCString();
+  document.cookie = "lang=" + value + "; expires=" + date;
 }
 
 function createBodyContainer() {
@@ -161,6 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
   bodyContainer.appendChild(createKeyboardInput());
   bodyContainer.appendChild(createKeys());
   document.body.appendChild(bodyContainer);
+  document.body.appendChild(createWarning());
 
   initChangeLanguageHandler();
   initKeyPressHandler();
