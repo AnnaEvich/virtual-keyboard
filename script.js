@@ -114,8 +114,7 @@ function initKeyPressHandler() {
   document.addEventListener('keydown', function(event) {
     if (keyCodeList.includes(event.key)) {
       addKeyToInput(event.key);
-      let keyId = specialKeyNameList[event.key]? specialKeyNameList[event.key] : event.key;
-      let keyHtml = document.getElementById(keyId);
+      let keyHtml = document.getElementById(event.key);
       if (keyHtml) {
         keyHtml.classList.add('active');
       }
@@ -123,8 +122,7 @@ function initKeyPressHandler() {
   });
   document.addEventListener('keyup', function(event) {
     if (keyCodeList.includes(event.key)) {
-      let keyId = specialKeyNameList[event.key]? specialKeyNameList[event.key] : event.key;
-      let keyHtml = document.getElementById(keyId);
+      let keyHtml = document.getElementById(event.key);
       if (keyHtml) {
         keyHtml.classList.remove('active');
       }
