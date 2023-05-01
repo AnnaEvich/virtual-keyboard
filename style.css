@@ -4,3 +4,43 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+#body-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-width: 73%;
+    max-height: 40%;
+    margin-top: 10%;
+    background: #ffe5f2;
+}
+
+#keyboard-input {
+    font-size: 2.5rem;
+    border: #ffffff;
+    margin: 20px;
+    padding: 10px;
+    height: 90px;
+}
+
+#keys-container {
+    display: flex;
+    flex-flow: row wrap;
+    text-align: center;
+    justify-content: space-around;
+    align-items: center;
+    gap: 3px;
+    margin: 10px 10px 20px 10px;
+}
+
+.key {
+    width: fit-content;
+    font-size: 2rem;
+    min-width: 4%;
+    height: 40px;
+    background: #ffffff;
+    padding: 10px;
+    border: #9d9da2 2px solid;
+    border-radius: 10px;
+    transition: 150ms;
+}
